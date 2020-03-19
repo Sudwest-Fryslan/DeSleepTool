@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
+  <asmv1:assemblyIdentity name="DeSleepTool.exe" version="1.0.0.1" publicKeyToken="cd06b6963704c0b8" language="neutral" processorArchitecture="msil" type="win32" />
+  <description asmv2:iconFile="logo.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
+  <application />
+  <entryPoint>
+    <assemblyIdentity name="DeSleepTool" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+    <commandLine file="DeSleepTool.exe" parameters="" />
+  </entryPoint>
+  <trustInfo>
+    <security>
+      <applicationRequestMinimum>
+        <PermissionSet Unrestricted="true" ID="Custom" SameSite="site" />
+        <defaultAssemblyRequest permissionSetReference="Custom" />
+      </applicationRequestMinimum>
+      <requestedPrivileges xmlns="urn:schemas-microsoft-com:asm.v3">
+        <!--
+          UAC Manifest Options
+          If you want to change the Windows User Account Control level replace the
+          requestedExecutionLevel node with one of the following.
+
+        <requestedExecutionLevel  level="asInvoker" uiAccess="false" />
+        <requestedExecutionLevel  level="requireAdministrator" uiAccess="false" />
+        <requestedExecutionLevel  level="highestAvailable" uiAccess="false" />
+
+         If you want to utilize File and Registry Virtualization for backward
+         compatibility then delete the requestedExecutionLevel node.
+    -->
+        <requestedExecutionLevel level="asInvoker" uiAccess="false" />
+      </requestedPrivileges>
+    </security>
+  </trustInfo>
+  <dependency>
+    <dependentOS>
+      <osVersionInfo>
+        <os majorVersion="5" minorVersion="1" buildNumber="2600" servicePackMajor="0" />
+      </osVersionInfo>
+    </dependentOS>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="Microsoft.Windows.CommonLanguageRuntime" version="4.0.30319.0" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="DeSleepTool.exe" size="78784">
+      <assemblyIdentity name="DeSleepTool" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>IQqnMahSSeshA+nQ6lOyyCxp+/1w5codxn79jDUYVwA=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="ZaakDocumentServices.dll" size="58880">
+      <assemblyIdentity name="ZaakDocumentServices" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>MavyvYvll9MjjrAW9iSfWIvDKONU1QjXvkzyGWleoQY=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <file name="DeSleepTool.exe.config" size="1436">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>2G9bP9GGD8/qo6YVnuQOPGldmt+xJ+XaFVFdkCI5S04=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="logo.ico" size="26734">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>WebRvhEqIAWltRwy/rhr2RVNEZeIp5N4k2mkxCOYwqk=</dsig:DigestValue>
+    </hash>
+  </file>
+<publisherIdentity name="CN=ISZF\e.witteveen" issuerKeyHash="f646f49dd244008da43768d77a1b9c06586b1138" /><Signature Id="StrongNameSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>Zlxnq7KtDtl6sOCxe9EyAb9CQUBf8U561/y5zv35EtY=</DigestValue></Reference></SignedInfo><SignatureValue>JwzGWKSYLhy/Mhrx88rCslhWcQH8bcfcMqZJ7FBq9Zt5bh4ehDl4Ki3tt3OFtzGDUXAg7JxqPPoH6N+CjT7JVdx6f2DH70s1BC2K0DwLgDMoAQCwmjPIoqkNtNWdxYhuB6iWGcOUVkqGHiMHgTqjpOJwJorFDYF7mFY1GJFgVnk=</SignatureValue><KeyInfo Id="StrongNameKeyInfo"><KeyValue><RSAKeyValue><Modulus>plI547dGHBO2/ox0CKssDdnbUJL/pGwXOIOgDLc2VRbTd79JZdueeCOVyxkFAp4PhgMrkpn9x+6p5MJ8KnyWQ7NY9yBvknulRaAOf232fx0w8BVwVxVK5jZzYauTXNQxP5qnOF6yURrPZCK5UBSTeqJ6l/cz7SK7g7YXpxt+KhU=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><msrel:RelData xmlns:msrel="http://schemas.microsoft.com/windows/rel/2005/reldata"><r:license xmlns:r="urn:mpeg:mpeg21:2003:01-REL-R-NS" xmlns:as="http://schemas.microsoft.com/windows/pki/2005/Authenticode"><r:grant><as:ManifestInformation Hash="d612f9fdceb9fcd77a4ef15f404142bf0132d17bb1e0b07ad90eadb2ab675c66" Description="" Url=""><as:assemblyIdentity name="DeSleepTool.exe" version="1.0.0.1" publicKeyToken="cd06b6963704c0b8" language="neutral" processorArchitecture="msil" type="win32" /></as:ManifestInformation><as:SignedBy /><as:AuthenticodePublisher><as:X509SubjectName>CN=ISZF\e.witteveen</as:X509SubjectName></as:AuthenticodePublisher></r:grant><r:issuer><Signature Id="AuthenticodeSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>tQ08bbfFqimlruWoPJkSHVJPqXl1kMA0EOw+Oroa39E=</DigestValue></Reference></SignedInfo><SignatureValue>TiDOHSvIwH1Wm7zMbckfckBCssK5pzwQjeq8+heBCljS39L5GI2zlMgDkuhBZLrH4wW5eXKWomA0ThXm4VHOxOpGYEsnLhQTnhbDk694O1uzwZqIomHo7Dp0fWUKlwCeMmPsh4R0NM/DSmEKuji49zx6SckuufZuhQTg4rsrwmo=</SignatureValue><KeyInfo><KeyValue><RSAKeyValue><Modulus>plI547dGHBO2/ox0CKssDdnbUJL/pGwXOIOgDLc2VRbTd79JZdueeCOVyxkFAp4PhgMrkpn9x+6p5MJ8KnyWQ7NY9yBvknulRaAOf232fx0w8BVwVxVK5jZzYauTXNQxP5qnOF6yURrPZCK5UBSTeqJ6l/cz7SK7g7YXpxt+KhU=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><X509Data><X509Certificate>MIIB2TCCAUKgAwIBAgIQQRLFSF79tKdPEuk5RQ7UFjANBgkqhkiG9w0BAQsFADArMSkwJwYDVQQDHiAASQBTAFoARgBcAGUALgB3AGkAdAB0AGUAdgBlAGUAbjAeFw0yMDAzMTkyMDU0MDBaFw0yMTAzMjAwMjU0MDBaMCsxKTAnBgNVBAMeIABJAFMAWgBGAFwAZQAuAHcAaQB0AHQAZQB2AGUAZQBuMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCmUjnjt0YcE7b+jHQIqywN2dtQkv+kbBc4g6AMtzZVFtN3v0ll2554I5XLGQUCng+GAyuSmf3H7qnkwnwqfJZDs1j3IG+Se6VFoA5/bfZ/HTDwFXBXFUrmNnNhq5Nc1DE/mqc4XrJRGs9kIrlQFJN6onqX9zPtIruDthenG34qFQIDAQABMA0GCSqGSIb3DQEBCwUAA4GBAG5nJ5mDaUBlXY0w4a8U3W0iSkNlAnIhpHoYq2fvAJZHXNZoFh8OcAcWllUv3cUX2ynvfYf2DGz5EUup3FF3GPlBycK+N5AvDklW8COZQAf4TuqHwjLQ8VawuDu8vDHKOPWhdpUpA4a6/DUo2VkScz7slJo6S6e6m9AY2iP1Wp4r</X509Certificate></X509Data></KeyInfo></Signature></r:issuer></r:license></msrel:RelData></KeyInfo></Signature></asmv1:assembly>

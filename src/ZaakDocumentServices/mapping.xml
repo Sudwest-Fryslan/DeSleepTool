@@ -1,0 +1,27 @@
+<documentmapping>
+	<zaaktype matchfield="code" matchvalue="B1026">
+		<document matchfield="bestandsnaam" matchvalue="Minimaregelingen en kindpakket.pdf">
+			<titel>Aanvraagformulier Minimaregelingen en kindpakket</titel>
+			<type>Fomulier</type>
+			<vertrouwelijkheid>Vertrouwelijk</vertrouwelijkheid>
+		</document>
+		<!--catch all document-->
+		<document>
+			<!-- <titel>Bijlagen/Bewijsstukken</titel> -->
+			<type>Overige</type>
+			<vertrouwelijkheid>Vertrouwelijk</vertrouwelijkheid>
+		</document>
+	</zaaktype>
+
+	<!--catch all zaaktype-->
+	<zaaktype>
+		<document matchfield="bestandsnaam" matchvalue="vertrouwelijk">
+			<vertrouwelijkheid>Vertrouwelijk</vertrouwelijkheid>
+			<type>Vertouwelijk Fomulier</type>
+		</document>
+		<document>
+			<vertrouwelijkheid>Intern</vertrouwelijkheid>
+			<type>Intern Fomulier</type>
+		</document>
+	</zaaktype>
+</documentmapping>

@@ -1,0 +1,40 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xmime="xmime">
+   <soapenv:Body>
+      <edcLk01 xmlns="http://www.egem.nl/StUF/sector/zkn/0310" xmlns:StUF="http://www.egem.nl/StUF/StUF0301" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xmime="http://www.w3.org/2005/05/xmlmime">
+         <stuurgegevens>
+            <StUF:berichtcode>Lk01</StUF:berichtcode>
+            <StUF:zender>
+               <StUF:organisatie>1900</StUF:organisatie>
+               <StUF:applicatie>ZaakDocumentManager</StUF:applicatie>
+            </StUF:zender>
+            <StUF:ontvanger>
+               <StUF:organisatie>1900</StUF:organisatie>
+               <StUF:applicatie>CDR</StUF:applicatie>
+            </StUF:ontvanger>
+            <StUF:referentienummer>34657</StUF:referentienummer>
+            <StUF:tijdstipBericht>20180223113022756</StUF:tijdstipBericht>
+            <StUF:entiteittype>EDC</StUF:entiteittype>
+         </stuurgegevens>
+         <parameters>
+            <StUF:mutatiesoort>T</StUF:mutatiesoort>
+            <StUF:indicatorOvername>V</StUF:indicatorOvername>
+         </parameters>
+         <object StUF:entiteittype="EDC" StUF:verwerkingssoort="T">
+            <identificatie>190040088</identificatie>
+            <dct.omschrijving>documenttype</dct.omschrijving>
+            <creatiedatum>20180223</creatiedatum>
+            <titel>titel</titel>
+            <formaat>formaat</formaat>
+            <taal>nld</taal>
+            <vertrouwelijkAanduiding>VERTROUWELIJK</vertrouwelijkAanduiding>
+            <auteur>gebruiker</auteur>
+            <inhoud xmime:contentType="application/pdf" StUF:bestandsnaam="bestandsnaam.pdf">base64-gecodeerde-content</inhoud>
+            <isRelevantVoor StUF:entiteittype="EDCZAK" StUF:verwerkingssoort="T">
+               <gerelateerde StUF:entiteittype="ZAK" StUF:verwerkingssoort="I">
+                  <identificatie>zaakidentifier</identificatie>
+               </gerelateerde>
+            </isRelevantVoor>
+         </object>
+      </edcLk01>
+   </soapenv:Body>
+</soapenv:Envelope>

@@ -1,0 +1,18 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+  <soapenv:Body>
+    <genereerDocumentIdentificatie_Di02 xmlns="http://www.egem.nl/StUF/sector/zkn/0310" xmlns:StUF="http://www.egem.nl/StUF/StUF0301" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <stuurgegevens>
+        <StUF:berichtcode>Di02</StUF:berichtcode>
+        <StUF:zender>
+          <StUF:organisatie>1900</StUF:organisatie>
+          <StUF:applicatie>ZaakDocumentManager</StUF:applicatie>
+        </StUF:zender>
+        <StUF:ontvanger>
+          <StUF:organisatie>1900</StUF:organisatie>
+          <StUF:applicatie>CDR</StUF:applicatie>
+        </StUF:ontvanger>
+        <StUF:functie>genereerDocumentidentificatie</StUF:functie>
+      </stuurgegevens>      
+    </genereerDocumentIdentificatie_Di02>
+  </soapenv:Body>
+</soapenv:Envelope>

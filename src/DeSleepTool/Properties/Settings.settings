@@ -1,0 +1,15 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="DeSleepTool.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="StandaardZaakDocumentServicesVrijBerichtService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://localhost:8080/VrijBerichtService</Value>
+    </Setting>
+    <Setting Name="StandaardZaakDocumentServicesOntvangAsynchroonService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://localhost:8080/OntvangAsynchroon</Value>
+    </Setting>
+    <Setting Name="StandaardZaakDocumentServicesBeantwoordVraagService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://localhost:8080/BeantwoordVraag</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

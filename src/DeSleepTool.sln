@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29728.190
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeSleepTool", "DeSleepTool\DeSleepTool.csproj", "{FB379773-3040-48F3-ACD5-526E8D07DF47}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZaakDocumentServices", "ZaakDocumentServices\ZaakDocumentServices.csproj", "{20565E83-F2A5-4764-A155-38ABDC2CBFBE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FB379773-3040-48F3-ACD5-526E8D07DF47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB379773-3040-48F3-ACD5-526E8D07DF47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB379773-3040-48F3-ACD5-526E8D07DF47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB379773-3040-48F3-ACD5-526E8D07DF47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20565E83-F2A5-4764-A155-38ABDC2CBFBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20565E83-F2A5-4764-A155-38ABDC2CBFBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20565E83-F2A5-4764-A155-38ABDC2CBFBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20565E83-F2A5-4764-A155-38ABDC2CBFBE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4BED8170-63E4-400F-A491-6361808EBD9E}
+	EndGlobalSection
+EndGlobal
