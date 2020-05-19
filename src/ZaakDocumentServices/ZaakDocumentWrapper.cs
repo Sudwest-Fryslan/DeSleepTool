@@ -19,7 +19,7 @@ namespace ZaakDocumentServices
                 var childnodes = zaakdocumentnode.ChildNodes;
                 foreach(XmlNode node in childnodes)
                 {
-                    if (node.Name == "titel")
+                    if (node.LocalName == "titel")
                     {
                         return node.InnerText;
                     }
