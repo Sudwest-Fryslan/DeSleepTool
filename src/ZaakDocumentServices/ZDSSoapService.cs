@@ -176,13 +176,23 @@ namespace ZaakDocumentServices
                 {
                     var errorstream = wex.Response.GetResponseStream();
                     var errorreader = new System.IO.StreamReader(errorstream, Encoding.UTF8);
+                    const int MAX_MESSAGE_LENGTH = 5000;
                     String errormessage = errorreader.ReadToEnd();
+                    if (errormessage.Length > MAX_MESSAGE_LENGTH)
+                    {
+                        errormessage = errormessage.Substring(0, MAX_MESSAGE_LENGTH) + "... (" + errormessage.Length + " characters)";
+                    }
+                    String requestxml = requestdocument.OuterXml;
+                    if(requestxml.Length > MAX_MESSAGE_LENGTH)
+                    {
+                        requestxml = requestxml.Substring(0, MAX_MESSAGE_LENGTH) + "... (" + requestxml.Length + " characters)";
+                    }
 
                     throw new ZDSSoapServiceException(
                             "soap url: " + soapurl + "\n" +
                             "soap action: " + soapaction + "\n" +
                             "\n-- request ---------------------------------------------------------------------\n" +
-                            requestdocument.OuterXml + "\n" +
+                            requestxml + "\n" +
                             "\n\n-- response " + wex.Message + "---------------------------------------------------------------------\n" +
                             errormessage,
                             wex

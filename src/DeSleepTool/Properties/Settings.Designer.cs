@@ -12,7 +12,7 @@ namespace DeSleepTool.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.4.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.7.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -26,7 +26,7 @@ namespace DeSleepTool.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost:8080/VrijBerichtService")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost:8080/translate/generic/zds/VrijBericht")]
         public string StandaardZaakDocumentServicesVrijBerichtService {
             get {
                 return ((string)(this["StandaardZaakDocumentServicesVrijBerichtService"]));
@@ -36,7 +36,7 @@ namespace DeSleepTool.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost:8080/OntvangAsynchroon")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost:8080/translate/generic/zds/OntvangAsynchroon")]
         public string StandaardZaakDocumentServicesOntvangAsynchroonService {
             get {
                 return ((string)(this["StandaardZaakDocumentServicesOntvangAsynchroonService"]));
@@ -46,7 +46,7 @@ namespace DeSleepTool.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost:8080/BeantwoordVraag")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost:8080/translate/generic/zds/BeantwoordVraag")]
         public string StandaardZaakDocumentServicesBeantwoordVraagService {
             get {
                 return ((string)(this["StandaardZaakDocumentServicesBeantwoordVraagService"]));
