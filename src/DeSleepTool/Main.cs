@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ZaakDocumentServices;
 
 namespace DeSleepTool
 {
@@ -57,7 +58,9 @@ namespace DeSleepTool
             var documenten = zds.GeefLijstZaakdocumenten(txtZaakIdentificatie.Text);
             foreach (var document in documenten)
             {
-                lvDocumenten.Items.Add(document.Titel);
+                var lvi = new ListViewItem(document.Titel);
+                lvi.Tag = document;
+                lvDocumenten.Items.Add(lvi);
             }
             lvDocumenten.Enabled = true;
         }
@@ -169,6 +172,30 @@ namespace DeSleepTool
             if (e.KeyCode == Keys.Enter)
             {
                 RefreshData();
+            }
+        }
+
+        private void lvDocumenten_Click(object sender, EventArgs e)
+        {
+            if (Properties.Settings.Default.ShowZaakDocuments)
+            {
+                if (lvDocumenten.SelectedItems.Count == 0)
+                {
+                    return;
+                }
+                var item = lvDocumenten.SelectedItems[0];
+                ZaakDocumentWrapper zdw = (ZaakDocumentWrapper)item.Tag;
+
+                var zds = new ZaakDocumentServices.ZaakDocumentServices(
+                    Properties.Settings.Default.StandaardZaakDocumentServicesVrijBerichtService,
+                    Properties.Settings.Default.StandaardZaakDocumentServicesOntvangAsynchroonService,
+                    Properties.Settings.Default.StandaardZaakDocumentServicesBeantwoordVraagService
+                );
+
+                ZaakDocumentBytesWrapper zdbw =  zds.geefZaakdocumentLezen(zdw.Identificatie);
+                var filename = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + zdbw.Bestandsnaam;
+                System.IO.File.WriteAllBytes(filename, zdbw.Bytes);
+                System.Diagnostics.Process.Start(filename);
             }
         }
     }

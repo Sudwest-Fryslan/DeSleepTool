@@ -135,6 +135,20 @@ namespace ZaakDocumentServices
                 if (nodes.Count != 1) return null;
                 return new ZDSXmlNode(nodes[0]);
             }
+
+            public string GetAttributeText(string xpath, string attributename)
+            {
+                var nodes = node.SelectNodes(xpath, NamespaceManager);
+                if (nodes.Count != 1) throw new Exception("xpath: " + xpath + " did not return a single node (count:" + nodes.Count + ")");
+                XmlNode n = nodes[0];
+                if (n.Attributes[attributename] == null) throw new Exception("xpath: " + xpath + " found but no attribute with name:" + attributename);
+                return n.Attributes[attributename].Value;
+            }
+
+            public byte[] GetNodeBytes(string xpath)
+            {
+                return System.Convert.FromBase64String(GetNodeText(xpath));
+            }
         }
 
         public ZDSXmlDocument PerformRequest(ZDSXmlDocument requestdocument)

@@ -47,8 +47,9 @@
     <Compile Include="ZaakDocumentAttributes.cs" />
     <Compile Include="Mime.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ZaakNodeWrapper.cs" />
+    <Compile Include="ZaakDocumentBytesWrapper.cs" />
     <Compile Include="ZaakDocumentWrapper.cs" />
+    <Compile Include="ZaakNodeWrapper.cs" />
     <Compile Include="StufZkn.cs" />
     <Compile Include="ZaakDocumentServices.cs" />
     <Compile Include="ZDSSoapService.cs" />
@@ -58,6 +59,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="geefZaakdetails_Lv01.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="geefZaakdocumentLezen_Lv01.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="genereerDocumentIdentificatie_Di02.xml">

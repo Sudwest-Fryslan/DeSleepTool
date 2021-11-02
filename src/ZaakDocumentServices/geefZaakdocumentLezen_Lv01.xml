@@ -1,0 +1,54 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+  <soapenv:Header/>
+  <soapenv:Body>
+    <edcLv01 xmlns="http://www.egem.nl/StUF/sector/zkn/0310" xmlns:StUF="http://www.egem.nl/StUF/StUF0301" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <stuurgegevens>
+        <StUF:berichtcode>Lv01</StUF:berichtcode>
+        <StUF:zender>
+          <StUF:organisatie>1900</StUF:organisatie>
+          <StUF:applicatie>ZaakDocumentManager</StUF:applicatie>
+        </StUF:zender>
+        <StUF:ontvanger>
+          <StUF:organisatie>1900</StUF:organisatie>
+          <StUF:applicatie>CDR</StUF:applicatie>
+        </StUF:ontvanger>
+        <StUF:referentienummer>34657</StUF:referentienummer>
+        <StUF:tijdstipBericht>20180223113022756</StUF:tijdstipBericht>
+        <StUF:entiteittype>EDC</StUF:entiteittype>
+      </stuurgegevens>
+      <parameters>
+        <StUF:sortering>0</StUF:sortering>
+        <StUF:indicatorVervolgvraag>false</StUF:indicatorVervolgvraag>
+        <StUF:indicatorAfnemerIndicatie>false</StUF:indicatorAfnemerIndicatie>
+        <StUF:indicatorAantal>false</StUF:indicatorAantal>
+      </parameters>
+      <gelijk StUF:entiteittype="EDC">
+        <identificatie>190000002</identificatie>
+      </gelijk>
+      <scope>
+        <object StUF:entiteittype="EDC">
+          <identificatie xsi:nil="true"/>
+          <dct.omschrijving xsi:nil="true"/>
+          <creatiedatum xsi:nil="true"/>
+          <ontvangstdatum xsi:nil="true"/>
+          <titel xsi:nil="true"/>
+          <beschrijving xsi:nil="true"/>
+          <formaat xsi:nil="true"/>
+          <taal xsi:nil="true"/>
+          <versie xsi:nil="true"/>
+          <status xsi:nil="true"/>
+          <verzenddatum xsi:nil="true"/>
+          <vertrouwelijkAanduiding xsi:nil="true"/>
+          <auteur xsi:nil="true"/>
+          <link xsi:nil="true"/>
+          <inhoud xsi:nil="true"/>
+          <isRelevantVoor StUF:entiteittype="EDCZAK">
+            <gerelateerde StUF:entiteittype="ZAK">
+              <identificatie xsi:nil="true"/>
+            </gerelateerde>
+          </isRelevantVoor>
+        </object>
+      </scope>
+    </edcLv01>
+  </soapenv:Body>
+</soapenv:Envelope>

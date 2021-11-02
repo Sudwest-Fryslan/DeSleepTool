@@ -52,5 +52,14 @@ namespace DeSleepTool.Properties {
                 return ((string)(this["StandaardZaakDocumentServicesBeantwoordVraagService"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ShowZaakDocuments {
+            get {
+                return ((bool)(this["ShowZaakDocuments"]));
+            }
+        }
     }
 }

@@ -166,12 +166,14 @@
             // 
             this.lvDocumenten.AllowDrop = true;
             this.lvDocumenten.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lvDocumenten.HideSelection = false;
             this.lvDocumenten.Location = new System.Drawing.Point(0, 177);
             this.lvDocumenten.Name = "lvDocumenten";
             this.lvDocumenten.Size = new System.Drawing.Size(296, 206);
             this.lvDocumenten.TabIndex = 2;
             this.lvDocumenten.UseCompatibleStateImageBehavior = false;
             this.lvDocumenten.View = System.Windows.Forms.View.List;
+            this.lvDocumenten.Click += new System.EventHandler(this.lvDocumenten_Click);
             this.lvDocumenten.DragDrop += new System.Windows.Forms.DragEventHandler(this.lvDocumenten_DragDrop);
             this.lvDocumenten.DragEnter += new System.Windows.Forms.DragEventHandler(this.lvDocumenten_DragEnter);
             // 

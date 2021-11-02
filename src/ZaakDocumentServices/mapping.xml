@@ -1,27 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
 <documentmapping>
-	<zaaktype matchfield="code" matchvalue="B1026">
-		<document matchfield="bestandsnaam" matchvalue="Minimaregelingen en kindpakket.pdf">
-			<titel>Aanvraagformulier Minimaregelingen en kindpakket</titel>
+  <zaaktype matchfield="code" matchvalue="B0056">
+    <!-- BE00000467 : de aanvraag in pdf vorm -->
+    <document matchfield="bestandsnaam" matchvalue="Een evenement melden of aanvragen">
+      <titel bestandsnaam="true">Aanvraag vergunning</titel>
+      <type>Aanvraag vergunning</type>
       <vertrouwelijkheid>Vertrouwelijk</vertrouwelijkheid>
-      <type>Fomulier</type>
-		</document>
-		<!--catch all document-->
-		<document>
-			<!-- <titel>Bijlagen/Bewijsstukken</titel> -->
+    </document>
+    <!-- BE00000467 : de aanvraag in xml vorm -->
+    <document matchfield="bestandsnaam" matchvalue="StUF_Bericht">
+      <titel bestandsnaam="true">Aanvraag vergunning</titel>
+      <type>Aanvraag vergunning</type>
       <vertrouwelijkheid>Vertrouwelijk</vertrouwelijkheid>
+    </document>
+    <!-- LB00000089 -->
+    <document matchfield="bestandsnaam" matchvalue="constructie">
+      <titel bestandsnaam="true">Aanvraag vergunning - Constructiegegevens</titel>
+      <type>Aanvraag vergunning - Constructiegegevens</type>
+      <vertrouwelijkheid>Vertrouwelijk</vertrouwelijkheid>
+    </document>
+    <!-- LB00000090 -->
+    <document matchfield="bestandsnaam" matchvalue="afzetting">
+      <titel bestandsnaam="true">Aanvraag vergunning - Overzicht afzettingen</titel>
+      <type>Aanvraag vergunning - Overzicht afzettingen</type>
+      <vertrouwelijkheid>Vertrouwelijk</vertrouwelijkheid>
+    </document>
+    <!-- LB00000091 -->
+    <document matchfield="bestandsnaam" matchvalue="optreden">
+      <titel bestandsnaam="true">Aanvraag vergunning - Overzicht optreden</titel>
+      <type>Aanvraag vergunning - Overzicht optreden</type>
+      <vertrouwelijkheid>Vertrouwelijk</vertrouwelijkheid>
+    </document>
+    <!-- LB00000092 -->
+    <document matchfield="bestandsnaam" matchvalue="stand">
+      <titel bestandsnaam="true">Aanvraag vergunning - Overzicht standhouders</titel>
+      <type>Aanvraag vergunning - Overzicht standhouders</type>
+      <vertrouwelijkheid>Vertrouwelijk</vertrouwelijkheid>
+    </document>
+    <!-- LB00000093 -->
+    <document matchfield="bestandsnaam" matchvalue="stand">
+      <titel bestandsnaam="true">Aanvraag vergunning - Overzicht standhouders</titel>
+      <type>Aanvraag vergunning - Overzicht standhouders</type>
+      <vertrouwelijkheid>Vertrouwelijk</vertrouwelijkheid>
+    </document>
+    <!-- LB00000094 -->
+    <document matchfield="bestandsnaam" matchvalue="situatie">
+      <titel bestandsnaam="true">Aanvraag vergunning - Situatietekening</titel>
+      <type>Aanvraag vergunning - Situatietekening</type>
+      <vertrouwelijkheid>Vertrouwelijk</vertrouwelijkheid>
+    </document>
+    <!-- LB00000094 : eerste keer die op veilig controleerd -->
+    <document matchfield="bestandsnaam" matchvalue="veilig">
+      <titel bestandsnaam="true">Aanvraag vergunning - Veiligheidsplan</titel>
+      <type>Aanvraag vergunning - Veiligheidsplan</type>
+      <vertrouwelijkheid>Vertrouwelijk</vertrouwelijkheid>
+    </document>
+    <!-- LB00000094 : tweede keer die op veilig controleerd -->
+    <document matchfield="bestandsnaam" matchvalue="plan">
+      <titel bestandsnaam="true">Aanvraag vergunning - Veiligheidsplan</titel>
+      <type>Aanvraag vergunning - Veiligheidsplan</type>
+      <vertrouwelijkheid>Vertrouwelijk</vertrouwelijkheid>
+    </document>
+    <!-- catch all -->
+    <document>
+      <titel bestandsnaam="true">Aanvraag vergunning - Overige</titel>
+      <type>Aanvraag vergunning - Overige</type>
+      <vertrouwelijkheid>Vertrouwelijk</vertrouwelijkheid>
+    </document>
+  </zaaktype>
+  <zaaktype matchfield="code" matchvalue="LP00000014">
+    <document>
       <type>Overige</type>
-		</document>
-	</zaaktype>
-
-	<!--catch all zaaktype-->
-	<zaaktype>
-		<document matchfield="bestandsnaam" matchvalue="vertrouwelijk">
-			<vertrouwelijkheid>Vertrouwelijk</vertrouwelijkheid>
-			<type>Overig stuk intern</type>
-		</document>
-		<document>
-			<vertrouwelijkheid>Intern</vertrouwelijkheid>
-			<type>Overige</type>
-		</document>
-	</zaaktype>
+      <vertrouwelijkheid>Vertrouwelijk</vertrouwelijkheid>
+    </document>
+  </zaaktype>
+  <!-- Coffee zaaktype -->
+  <zaaktype matchfield="code" matchvalue="ZAAKTYPE-2020-0000000001">
+    <document>
+      <!-- catch all doctype -->
+      <type>Coffee form data</type>
+      <vertrouwelijkheid>Vertrouwelijk</vertrouwelijkheid>
+    </document>
+  </zaaktype>
+  <!-- catch all zaaktype -->
+  <zaaktype>
+    <!-- catch all doctype -->
+    <document>
+      <type>Brief</type>
+      <vertrouwelijkheid>Vertrouwelijk</vertrouwelijkheid>
+    </document>
+  </zaaktype>
 </documentmapping>

@@ -13,6 +13,23 @@ namespace ZaakDocumentServices
             this.zaakdocumentnode = zaakdocumentnode;
         }
 
+        public string Identificatie
+        {
+            get
+            {
+                var childnodes = zaakdocumentnode.ChildNodes;
+                foreach (XmlNode node in childnodes)
+                {
+                    if (node.LocalName == "identificatie")
+                    {
+                        return node.InnerText;
+                    }
+                }
+                return null;
+            }
+        }
+
+
         public string Titel {
             get
             {

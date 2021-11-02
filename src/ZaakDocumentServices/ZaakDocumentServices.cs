@@ -132,11 +132,9 @@ namespace ZaakDocumentServices
             requestdocument.SetAttributeText("//ZKN:object/ZKN:inhoud", "xmime:contentType", contenttype);
             requestdocument.SetAttributeText("//ZKN:object/ZKN:inhoud", "StUF:bestandsnaam", bestandsnaam);
             requestdocument.SetNodeText("//ZKN:object/ZKN:inhoud", Convert.ToBase64String(documentdata));
-
             requestdocument.SetNodeText("//ZKN:object/ZKN:isRelevantVoor/ZKN:gerelateerde/ZKN:identificatie", zaakidentificatie);
 
             var responsedocument = soapservice.PerformRequest(requestdocument);
-
 
             // TODO: use the documentid!!!!
             do
@@ -161,6 +159,22 @@ namespace ZaakDocumentServices
         public void VoegZaakdocumentToe(string zaakIdentificatie, string zaakdocumentidentificatie, ZaakDocument document)
         {
             VoegZaakdocumentToe(zaakIdentificatie, zaakdocumentidentificatie, document.attributes.Documenttype, document.attributes.CreationTime, document.attributes.Titel, document.attributes.Formaat, document.attributes.Taal, document.attributes.Vertrouwelijkheid, document.attributes.Mimetype, document.attributes.Bestandsnaam, document.data);
+        }
+
+        public ZaakDocumentBytesWrapper geefZaakdocumentLezen(string documentidentificatie)
+        {
+            var soapservice = new ZDSSoapService(
+                standaardZaakDocumentServicesBeantwoordVraagService,
+                "http://www.egem.nl/StUF/sector/zkn/0310/geefZaakdocumentLezen_Lv01	");
+            var requestdocument = new ZDSSoapService.ZDSXmlDocument("geefZaakdocumentLezen_Lv01.xml");
+
+            requestdocument.SetNodeText("//StUF:referentienummer", DateTime.Now.ToString("yyyyMMddhhmmssfff"));
+            requestdocument.SetNodeText("//StUF:tijdstipBericht", DateTime.Now.ToString("yyyyMMddhhmmssfff"));
+            requestdocument.SetNodeText("//ZKN:gelijk/ZKN:identificatie", documentidentificatie);
+
+            //return new ZaakNodeWrapper(soapservice.PerformRequest(requestdocument));
+
+            return new ZaakDocumentBytesWrapper(soapservice.PerformRequest(requestdocument));
         }
     }
 }

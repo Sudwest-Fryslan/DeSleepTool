@@ -11,5 +11,8 @@
     <Setting Name="StandaardZaakDocumentServicesBeantwoordVraagService" Type="(Web Service URL)" Scope="Application">
       <Value Profile="(Default)">http://localhost:8080/translate/generic/zds/BeantwoordVraag</Value>
     </Setting>
+    <Setting Name="ShowZaakDocuments" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
