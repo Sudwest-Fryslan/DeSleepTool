@@ -70,7 +70,7 @@
   </zaaktype>
   <zaaktype matchfield="code" matchvalue="LP00000014">
     <document>
-      <type>Overige</type>
+      <type>Overig stuk intern</type>
       <vertrouwelijkheid>Vertrouwelijk</vertrouwelijkheid>
     </document>
   </zaaktype>
@@ -83,10 +83,10 @@
     </document>
   </zaaktype>
   <!-- catch all zaaktype -->
-  <zaaktype>
+  <zaaktype>	  
     <!-- catch all doctype -->
     <document>
-      <type>Brief</type>
+	    <type>Brief</type>
       <vertrouwelijkheid>Vertrouwelijk</vertrouwelijkheid>
     </document>
   </zaaktype>
