@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -81,6 +84,21 @@ namespace DeSleepTool
                     string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
                     foreach (string file in files)
                     {
+                        bool allowedExtension =  false;
+                        foreach(string extension in Properties.Settings.Default.AllowedExtensions)
+                        {
+                            if (file.ToLower().EndsWith(extension))
+                            {
+                                allowedExtension = true;
+                            }
+                        }
+                        if(!allowedExtension)
+                        {
+                            ;
+                            MessageBox.Show("De extensie van het bestand: '" + file + "' wordt niet ondersteund. De ondersteunde extenties zijn:" + string.Join(", ", Properties.Settings.Default.AllowedExtensions.Cast<string>().ToArray()), "Niet ondersteunde extensie");
+                            break;
+                        }
+
                         var zaakdocumentid = zds.GenereerDocumentidentificatie(txtZaakIdentificatie.Text);
                         var documentfile = new System.IO.FileInfo(file);
                         var documentdata = System.IO.File.ReadAllBytes(documentfile.FullName);
@@ -177,25 +195,46 @@ namespace DeSleepTool
 
         private void lvDocumenten_Click(object sender, EventArgs e)
         {
-            if (Properties.Settings.Default.ShowZaakDocuments)
+            if (Properties.Settings.Default.OpenZaakDocuments)
             {
-                if (lvDocumenten.SelectedItems.Count == 0)
+                ListViewItem item = sender as ListViewItem;
+                if (item == null)
                 {
                     return;
                 }
-                var item = lvDocumenten.SelectedItems[0];
-                ZaakDocumentWrapper zdw = (ZaakDocumentWrapper)item.Tag;
 
+                ZaakDocumentWrapper zdw = (ZaakDocumentWrapper)item.Tag;
                 var zds = new ZaakDocumentServices.ZaakDocumentServices(
                     Properties.Settings.Default.StandaardZaakDocumentServicesVrijBerichtService,
                     Properties.Settings.Default.StandaardZaakDocumentServicesOntvangAsynchroonService,
                     Properties.Settings.Default.StandaardZaakDocumentServicesBeantwoordVraagService
                 );
-
                 ZaakDocumentBytesWrapper zdbw =  zds.geefZaakdocumentLezen(zdw.Identificatie);
-                var filename = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + zdbw.Bestandsnaam;
+                //var filename = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + zdbw.Bestandsnaam;
+                var filename = System.IO.Path.GetTempPath() + DateTime.Now.ToString("yyyyMMddHHmmss") + "-" + zdbw.Bestandsnaam;
+
                 System.IO.File.WriteAllBytes(filename, zdbw.Bytes);
-                System.Diagnostics.Process.Start(filename);
+
+
+                // Start the associated application
+                using (Process process = new Process())
+                {
+                    process.StartInfo = new ProcessStartInfo
+                    {
+                        FileName = filename,
+                        UseShellExecute = true // Let the OS decide what to do with the file
+                    };
+
+                    process.EnableRaisingEvents = true; // Enable the Exited event
+
+                    process.Exited += (psender, pe) =>
+                    {
+                        // Delete the temporary file when the application is closed
+                        File.Delete(filename);
+                    };
+
+                    process.Start();
+                }
             }
         }
     }
