@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -42,11 +43,17 @@
             this.label1 = new System.Windows.Forms.Label();
             this.txtZaakIdentificatie = new System.Windows.Forms.TextBox();
             this.lvDocumenten = new System.Windows.Forms.ListView();
+            this.lvTasks = new System.Windows.Forms.ListView();
+            this.chState = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chZaak = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chDocument = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.ilTaskIcons = new System.Windows.Forms.ImageList(this.components);
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStrip1
             // 
+            this.statusStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.statusStrip1.Location = new System.Drawing.Point(0, 383);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(296, 22);
@@ -169,13 +176,50 @@
             this.lvDocumenten.HideSelection = false;
             this.lvDocumenten.Location = new System.Drawing.Point(0, 177);
             this.lvDocumenten.Name = "lvDocumenten";
-            this.lvDocumenten.Size = new System.Drawing.Size(296, 206);
+            this.lvDocumenten.Size = new System.Drawing.Size(296, 86);
             this.lvDocumenten.TabIndex = 2;
             this.lvDocumenten.UseCompatibleStateImageBehavior = false;
             this.lvDocumenten.View = System.Windows.Forms.View.List;
-            this.lvDocumenten.Click += new System.EventHandler(this.lvDocumenten_Click);
             this.lvDocumenten.DragDrop += new System.Windows.Forms.DragEventHandler(this.lvDocumenten_DragDrop);
             this.lvDocumenten.DragEnter += new System.Windows.Forms.DragEventHandler(this.lvDocumenten_DragEnter);
+            this.lvDocumenten.DoubleClick += new System.EventHandler(this.lvDocumenten_DoubleClick);
+            // 
+            // lvTasks
+            // 
+            this.lvTasks.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.chState,
+            this.chZaak,
+            this.chDocument});
+            this.lvTasks.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.lvTasks.HideSelection = false;
+            this.lvTasks.Location = new System.Drawing.Point(0, 263);
+            this.lvTasks.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.lvTasks.Name = "lvTasks";
+            this.lvTasks.Size = new System.Drawing.Size(296, 120);
+            this.lvTasks.SmallImageList = this.ilTaskIcons;
+            this.lvTasks.TabIndex = 3;
+            this.lvTasks.UseCompatibleStateImageBehavior = false;
+            this.lvTasks.View = System.Windows.Forms.View.Details;
+            // 
+            // chState
+            // 
+            this.chState.Text = "State";
+            // 
+            // chZaak
+            // 
+            this.chZaak.Text = "Zaak";
+            // 
+            // chDocument
+            // 
+            this.chDocument.Text = "Document";
+            // 
+            // ilTaskIcons
+            // 
+            this.ilTaskIcons.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ilTaskIcons.ImageStream")));
+            this.ilTaskIcons.TransparentColor = System.Drawing.Color.Transparent;
+            this.ilTaskIcons.Images.SetKeyName(0, "wait.png");
+            this.ilTaskIcons.Images.SetKeyName(1, "processing.png");
+            this.ilTaskIcons.Images.SetKeyName(2, "error.png");
             // 
             // Main
             // 
@@ -186,12 +230,15 @@
             this.ClientSize = new System.Drawing.Size(296, 405);
             this.Controls.Add(this.lvDocumenten);
             this.Controls.Add(this.panel1);
+            this.Controls.Add(this.lvTasks);
             this.Controls.Add(this.statusStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Main";
             this.Text = "Zaakdocument Manager";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);
+            this.Load += new System.EventHandler(this.Main_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.ResumeLayout(false);
@@ -214,6 +261,11 @@
         private System.Windows.Forms.ListView lvDocumenten;
         private System.Windows.Forms.Button btnPaste;
         private System.Windows.Forms.TextBox txtZaaktypeCode;
+        private System.Windows.Forms.ListView lvTasks;
+        private System.Windows.Forms.ColumnHeader chState;
+        private System.Windows.Forms.ColumnHeader chZaak;
+        private System.Windows.Forms.ColumnHeader chDocument;
+        private System.Windows.Forms.ImageList ilTaskIcons;
     }
 }
 

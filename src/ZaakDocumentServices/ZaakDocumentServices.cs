@@ -1,23 +1,185 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
+using System.Runtime.Remoting;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
 
 namespace ZaakDocumentServices
 {
+    public delegate void Message(string message);
+    public delegate void Notify();
+
+    public enum TaskState { ToSendTask = 0, SendTask = 1, ErrorTask = 2}
+    public class Task
+    {
+        public String Zaakidentificatie { get; set; }
+        public String Documentidentificatie { get; set; }
+        public String Filename { get; set; }
+        public TaskState State { get; set; }
+    }
+
     public class ZaakDocumentServices
     {
+
+        public event Message InfoMessage;
+        public event Message ErrorMessage;
+        public event Notify Progress;
+
+        private string dataDirectory;
         private string standaardZaakDocumentServicesVrijBerichtService;
         private string standaardZaakDocumentServicesOntvangAsynchroonService;
         private string standaardZaakDocumentServicesBeantwoordVraagService;
+        private bool uploadInBackground;
 
-        public ZaakDocumentServices(string standaardZaakDocumentServicesVrijBerichtService, string standaardZaakDocumentServicesOntvangAsynchroonService, string standaardZaakDocumentServicesBeantwoordVraagService)
+        private string FOLDER_TOSEND = "/ZaakGewijsWerken/TeVerzenden/";
+        private string FOLDER_SENDING = "/ZaakGewijsWerken/Verzenden/";
+        private string FOLDER_SEND = "/ZaakGewijsWerken/Verzonden/";
+        private string FOLDER_ERROR = "/ZaakGewijsWerken/Fouten/";
+
+        private Thread backgroundThread;
+
+        public ZaakDocumentServices(string dataDirectory, string standaardZaakDocumentServicesVrijBerichtService, string standaardZaakDocumentServicesOntvangAsynchroonService, string standaardZaakDocumentServicesBeantwoordVraagService, bool uploadInBackground)
         {
+            this.dataDirectory = dataDirectory;
             this.standaardZaakDocumentServicesVrijBerichtService = standaardZaakDocumentServicesVrijBerichtService;
             this.standaardZaakDocumentServicesOntvangAsynchroonService = standaardZaakDocumentServicesOntvangAsynchroonService;
             this.standaardZaakDocumentServicesBeantwoordVraagService = standaardZaakDocumentServicesBeantwoordVraagService;
+
+            this.uploadInBackground = uploadInBackground;
+        }
+
+        public void Init()
+        {
+            if (this.uploadInBackground)
+            {
+                dataDirectory = Environment.ExpandEnvironmentVariables(dataDirectory);
+                var di = new System.IO.DirectoryInfo(dataDirectory + FOLDER_ERROR);
+                di.Create();
+                if (di.GetFiles().Length > 0)
+                {
+                    var message = "Found #" + di.GetFiles().Length + " errors in the directory:" + di.FullName;
+                    Console.WriteLine(message);
+                    ErrorMessage?.Invoke(message);
+                }
+                FOLDER_ERROR = di.FullName;
+
+                di = new System.IO.DirectoryInfo(dataDirectory + FOLDER_SENDING);
+                di.Create();
+                if (di.GetFiles().Length > 0)
+                {
+                    var message = "Found #" + di.GetFiles().Length + " sending in the directory:" + di.FullName;
+                    Console.WriteLine(message);
+                    InfoMessage?.Invoke(message);
+                }
+                FOLDER_SENDING = di.FullName;
+
+                di = new System.IO.DirectoryInfo(dataDirectory + FOLDER_TOSEND);
+                di.Create();
+                if (di.GetFiles().Length > 0)
+                {
+                    var message = "Found #" + di.GetFiles().Length + " tosend in the directory:" + di.FullName;
+                    Console.WriteLine(message);
+                    InfoMessage?.Invoke(message);
+                }
+                FOLDER_TOSEND = di.FullName;
+
+                di = new System.IO.DirectoryInfo(dataDirectory + FOLDER_SEND);
+                di.Create();
+                FOLDER_SEND = di.FullName;
+
+                backgroundThread = new Thread(() => BackgroundThreadFunction());
+                backgroundThread.Start();
+            }
+        }
+
+        private string ExtractString(string input, string startDelimiter, string endDelimiter)
+        {
+            int startDelimiterIndex = input.IndexOf(startDelimiter) + startDelimiter.Length;
+            int endDelimiterIndex = input.IndexOf(endDelimiter);
+
+            if (startDelimiterIndex >= 0 && endDelimiterIndex >= 0)
+            {
+                int substringStartIndex = startDelimiterIndex;
+                int substringLength = endDelimiterIndex - startDelimiterIndex;
+
+                string extractedString = input.Substring(substringStartIndex, substringLength).Trim();
+                return extractedString;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        private Task getTask(FileInfo fi, TaskState state)
+        {
+            var name = fi.Name;
+            var zaakidentificatie = ExtractString(name, "-zaak", "-document");
+            var documentidentificatie = ExtractString(name, "-document", ".xml");
+
+            return new Task { Zaakidentificatie = zaakidentificatie, Documentidentificatie = documentidentificatie, Filename = fi.Name, State = state };
+        }
+
+        public Task[] getTasks()
+        {
+            var result = new List<Task>();
+            var di = new DirectoryInfo(FOLDER_ERROR);
+            foreach (FileInfo fi in di.GetFiles())
+            {
+                result.Add(getTask(fi, TaskState.ErrorTask));
+            }
+            di = new DirectoryInfo(FOLDER_SENDING);
+            foreach (FileInfo fi in di.GetFiles())
+            {
+                result.Add(getTask(fi, TaskState.ToSendTask));
+            }
+            di = new DirectoryInfo(FOLDER_TOSEND);
+            foreach (FileInfo fi in di.GetFiles())
+            {
+                result.Add(getTask(fi, TaskState.ToSendTask));
+            }
+            return result.ToArray();
+        }
+
+        public void BackgroundThreadFunction()
+        {
+            do
+            {
+                foreach (FileInfo filelocation in new DirectoryInfo(FOLDER_TOSEND).GetFiles())
+                {
+                    Console.WriteLine("Processing:" + filelocation.FullName);
+                    var sendinglocation = new FileInfo(FOLDER_SENDING + filelocation.Name);
+                    filelocation.MoveTo(sendinglocation.FullName);                    
+
+                    Console.WriteLine("Sending:" + sendinglocation.FullName);
+                    var soapservice = new ZDSSoapService(
+                        standaardZaakDocumentServicesOntvangAsynchroonService,
+                        "http://www.egem.nl/StUF/sector/zkn/0310/voegZaakdocumentToe_Lk01");
+                    var requestdocument = new ZDSSoapService.ZDSXmlDocument(sendinglocation.FullName);
+                    try { 
+                        var responsedocument = soapservice.PerformRequest(requestdocument);
+                        var sendlocation = new FileInfo(FOLDER_SEND + filelocation.Name);
+                        Console.WriteLine("Send:" + sendlocation.FullName);
+                        sendinglocation.MoveTo(sendinglocation.FullName);
+                    }
+                    catch (Exception ex)
+                    {
+                        var errorlocation = new FileInfo(FOLDER_ERROR + filelocation.Name);
+                        Console.WriteLine("Error:" + errorlocation.FullName);
+                        sendinglocation.MoveTo(errorlocation.FullName);
+                        ErrorMessage?.Invoke(ex.ToString());
+                    }
+                    Progress?.Invoke();
+                }
+                Console.WriteLine("...Waiting...");
+                System.Threading.Thread.Sleep(500);
+            } while (true);
         }
 
         public ZaakNodeWrapper GeefZaakDetails(string zaakidentificatie)
@@ -36,6 +198,8 @@ namespace ZaakDocumentServices
 
         public ZaakDocumentWrapper[] GeefLijstZaakdocumenten(string zaakidentificatie)
         {
+            if (zaakidentificatie.Length == 0) return new ZaakDocumentWrapper[] { };
+
             var soapservice = new ZDSSoapService(
                 standaardZaakDocumentServicesBeantwoordVraagService,
                 "http://www.egem.nl/StUF/sector/zkn/0310/geefLijstZaakdocumenten_Lv01");
@@ -68,8 +232,8 @@ namespace ZaakDocumentServices
             return responsedocument.GetNodeText("//ZKN:document/ZKN:identificatie");
         }
 
-        public void VoegZaakdocumentToe(string zaakidentificatie, 
-            string zaakdocumentidentificatie, 
+        public void VoegZaakdocumentToe(string zaakidentificatie,
+            string zaakdocumentidentificatie,
             string zaakdocumenttype,
             DateTime creatiedatum,
             string titel,
@@ -84,11 +248,12 @@ namespace ZaakDocumentServices
             //TODO: check if exists
             var documenten = GeefLijstZaakdocumenten(zaakidentificatie);
             var dict = new Dictionary<string, ZaakDocumentWrapper>();
-            foreach(var document in documenten)
+            foreach (var document in documenten)
             {
-                if(!dict.ContainsKey(document.Titel)) {
+                if (!dict.ContainsKey(document.Titel))
+                {
                     dict.Add(document.Titel, document);
-                }                
+                }
             }
             if (dict.ContainsKey(titel))
             {
@@ -104,7 +269,8 @@ namespace ZaakDocumentServices
 
                         titel = begin + "_" + i + end;
                     }
-                    else { 
+                    else
+                    {
                         titel = name + "_" + i;
                     }
                     i++;
@@ -134,29 +300,39 @@ namespace ZaakDocumentServices
             requestdocument.SetNodeText("//ZKN:object/ZKN:inhoud", Convert.ToBase64String(documentdata));
             requestdocument.SetNodeText("//ZKN:object/ZKN:isRelevantVoor/ZKN:gerelateerde/ZKN:identificatie", zaakidentificatie);
 
-            var responsedocument = soapservice.PerformRequest(requestdocument);
 
-            // TODO: use the documentid!!!!
-            do
+            if (uploadInBackground)
             {
-                System.Threading.Thread.Sleep(500);
-
-                documenten = GeefLijstZaakdocumenten(zaakidentificatie);
-                dict = new Dictionary<string, ZaakDocumentWrapper>();
-                System.Diagnostics.Debug.WriteLine("*** documenten in de zaak # " + zaakidentificatie + " , we zoeken naar: '" + titel + "' ***");
-                foreach (var document in documenten)
-                {
-                    System.Diagnostics.Debug.WriteLine("\tgevonden document met titel: '" + document.Titel + "'");
-                    if(!dict.ContainsKey(document.Titel)) {
-                        dict.Add(document.Titel, document);
-                    }                    
-                }
+                var filename = "voegZaakdocumentToe-zaak" + zaakidentificatie + "-document" + zaakdocumentidentificatie + ".xml";
+                filename = FOLDER_TOSEND + filename;
+                requestdocument.Save(filename);
             }
-            while (!dict.ContainsKey(titel));
+            else
+            {
+                var responsedocument = soapservice.PerformRequest(requestdocument);
+
+                // TODO: use the documentid!!!!
+                do
+                {
+                    System.Threading.Thread.Sleep(500);
+
+                    documenten = GeefLijstZaakdocumenten(zaakidentificatie);
+                    dict = new Dictionary<string, ZaakDocumentWrapper>();
+                    System.Diagnostics.Debug.WriteLine("*** documenten in de zaak # " + zaakidentificatie + " , we zoeken naar: '" + titel + "' ***");
+                    foreach (var document in documenten)
+                    {
+                        System.Diagnostics.Debug.WriteLine("\tgevonden document met titel: '" + document.Titel + "'");
+                        if (!dict.ContainsKey(document.Titel))
+                        {
+                            dict.Add(document.Titel, document);
+                        }
+                    }
+                }
+                while (!dict.ContainsKey(titel));
+            }
         }
 
-
-        public void VoegZaakdocumentToe(string zaakIdentificatie, string zaakdocumentidentificatie, ZaakDocument document)
+        public void VoegZaakdocumentToeUpload(string zaakIdentificatie, string zaakdocumentidentificatie, ZaakDocument document)
         {
             VoegZaakdocumentToe(zaakIdentificatie, zaakdocumentidentificatie, document.attributes.Documenttype, document.attributes.CreationTime, document.attributes.Titel, document.attributes.Formaat, document.attributes.Taal, document.attributes.Vertrouwelijkheid, document.attributes.Mimetype, document.attributes.Bestandsnaam, document.data);
         }
@@ -175,6 +351,12 @@ namespace ZaakDocumentServices
             //return new ZaakNodeWrapper(soapservice.PerformRequest(requestdocument));
 
             return new ZaakDocumentBytesWrapper(soapservice.PerformRequest(requestdocument));
+        }
+
+        public void Close()
+        {
+            // niet zo netjes, maar werkt vast
+            backgroundThread.Abort();
         }
     }
 }
