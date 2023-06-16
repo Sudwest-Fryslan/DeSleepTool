@@ -46,19 +46,45 @@ namespace DeSleepTool
         }
 
         private void FillTasks()
-        {
+        {           
             // Update lvTasks on the UI thread
             lvTasks.Invoke(new Action(() =>
             {
-                lvTasks.Visible = Properties.Settings.Default.UploadInBackground;
-                lvTasks.Items.Clear();
-                foreach (ZaakDocumentServices.Task task in zds.getTasks())
+                try { 
+                    lvTasks.Visible = Properties.Settings.Default.UploadInBackground;
+                    lvTasks.Items.Clear();
+                    foreach (ZaakDocumentServices.Task task in zds.getTasks())
+                    {
+                        ListViewItem lvi = new ListViewItem();
+                        lvi.ImageIndex = (int) task.State;
+                        lvi.SubItems.Add(task.Zaakidentificatie);
+                        lvi.SubItems.Add(task.Documentidentificatie);
+                        lvi.SubItems.Add(task.Filename);
+                        lvTasks.Items.Add(lvi);
+                    }
+                }
+                catch(Exception ex)
                 {
-                    ListViewItem lvi = new ListViewItem(task.State.ToString());
-                    lvi.SubItems.Add(task.Zaakidentificatie);
-                    lvi.SubItems.Add(task.Documentidentificatie);
-                    lvi.SubItems.Add(task.Filename);
-                    lvTasks.Items.Add(lvi);
+                    MessageBox.Show(ex.ToString());
+                }
+            }));
+
+            lvDocumenten.Invoke(new Action(() =>
+            {
+                try
+                {
+                    lvDocumenten.Items.Clear();
+                    var documenten = zds.GeefLijstZaakdocumenten(txtZaakIdentificatie.Text);
+                    foreach (var document in documenten)
+                    {
+                        var lvi = new ListViewItem(document.Titel);
+                        lvi.Tag = document;
+                        lvDocumenten.Items.Add(lvi);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString());
                 }
             }));
         }
@@ -262,6 +288,7 @@ namespace DeSleepTool
         {
             var tasks = zds.getTasks();
             MessageBox.Show("Er zijn nog:" + tasks.Length + " taken te verzenden. Zorg ervoor dat deze nog verzonden worden!");
+            zds.Close();
         }
     }
 }

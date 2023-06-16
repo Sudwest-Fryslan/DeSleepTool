@@ -15,7 +15,7 @@ namespace ZaakDocumentServices
     public delegate void Message(string message);
     public delegate void Notify();
 
-    public enum TaskState { ErrorTask, SendTask, ToSendTask }
+    public enum TaskState { ToSendTask = 0, SendTask = 1, ErrorTask = 2}
     public class Task
     {
         public String Zaakidentificatie { get; set; }
@@ -41,6 +41,8 @@ namespace ZaakDocumentServices
         private string FOLDER_SENDING = "/ZaakGewijsWerken/Verzenden/";
         private string FOLDER_SEND = "/ZaakGewijsWerken/Verzonden/";
         private string FOLDER_ERROR = "/ZaakGewijsWerken/Fouten/";
+
+        private Thread backgroundThread;
 
         public ZaakDocumentServices(string dataDirectory, string standaardZaakDocumentServicesVrijBerichtService, string standaardZaakDocumentServicesOntvangAsynchroonService, string standaardZaakDocumentServicesBeantwoordVraagService, bool uploadInBackground)
         {
@@ -91,7 +93,7 @@ namespace ZaakDocumentServices
                 di.Create();
                 FOLDER_SEND = di.FullName;
 
-                Thread backgroundThread = new Thread(() => BackgroundThreadFunction());
+                backgroundThread = new Thread(() => BackgroundThreadFunction());
                 backgroundThread.Start();
             }
         }
@@ -153,7 +155,7 @@ namespace ZaakDocumentServices
                 {
                     Console.WriteLine("Processing:" + filelocation.FullName);
                     var sendinglocation = new FileInfo(FOLDER_SENDING + filelocation.Name);
-                    filelocation.MoveTo(sendinglocation.FullName);
+                    filelocation.MoveTo(sendinglocation.FullName);                    
 
                     Console.WriteLine("Sending:" + sendinglocation.FullName);
                     var soapservice = new ZDSSoapService(
@@ -196,6 +198,8 @@ namespace ZaakDocumentServices
 
         public ZaakDocumentWrapper[] GeefLijstZaakdocumenten(string zaakidentificatie)
         {
+            if (zaakidentificatie.Length == 0) return new ZaakDocumentWrapper[] { };
+
             var soapservice = new ZDSSoapService(
                 standaardZaakDocumentServicesBeantwoordVraagService,
                 "http://www.egem.nl/StUF/sector/zkn/0310/geefLijstZaakdocumenten_Lv01");
@@ -347,6 +351,12 @@ namespace ZaakDocumentServices
             //return new ZaakNodeWrapper(soapservice.PerformRequest(requestdocument));
 
             return new ZaakDocumentBytesWrapper(soapservice.PerformRequest(requestdocument));
+        }
+
+        public void Close()
+        {
+            // niet zo netjes, maar werkt vast
+            backgroundThread.Abort();
         }
     }
 }
