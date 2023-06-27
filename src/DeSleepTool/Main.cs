@@ -129,29 +129,27 @@ namespace DeSleepTool
             lvDocumenten.Enabled = true;
         }
 
-        private void AddFileToZds(ZaakDocumentServices.ZaakDocumentServices zds, String file)
+        private void AddFileToZds(UploadDocument document)
         {
             bool allowedExtension = false;
             foreach (string extension in Properties.Settings.Default.AllowedExtensions)
             {
-                if (file.ToLower().EndsWith(extension))
+                if (document.fileinfo.Extension.Equals(extension))
                 {
                     allowedExtension = true;
                 }
             }
             if (!allowedExtension)
             {
-                MessageBox.Show("De extensie van het bestand: '" + file + "' wordt niet ondersteund. De ondersteunde extenties zijn:" + string.Join(", ", Properties.Settings.Default.AllowedExtensions.Cast<string>().ToArray()), "Niet ondersteunde extensie");
+                MessageBox.Show("De extensie van het bestand: '" + document.fileinfo + "' wordt niet ondersteund. De ondersteunde extenties zijn:" + string.Join(", ", Properties.Settings.Default.AllowedExtensions.Cast<string>().ToArray()), "Niet ondersteunde extensie");
                 return;
             }
 
             var zaakdocumentid = zds.GenereerDocumentidentificatie(txtZaakIdentificatie.Text);
-            var documentfile = new System.IO.FileInfo(file);
-            var documentdata = System.IO.File.ReadAllBytes(documentfile.FullName);
-            var mimetype = ZaakDocumentServices.Mime.GetMime(documentfile.FullName, documentdata);
+            var mimetype = ZaakDocumentServices.Mime.GetMime(document.fileinfo.FullName, document.filedata);
 
             //var documentmapping = new ZaakDocumentServices.DocumentMapping(txtZaaktypeCode.Text, documentfile.Name, documentfile.CreationTime);
-            var documentmapping = ZaakDocumentServices.ZaakDocumentAttributes.ExtractDocumentAttributes(txtZaaktypeCode.Text, documentfile.Name, mimetype, documentfile.CreationTime);
+            var documentmapping = ZaakDocumentServices.ZaakDocumentAttributes.ExtractDocumentAttributes(txtZaaktypeCode.Text, document.fileinfo.Name, mimetype, document.fileinfo.CreationTime);
 
             zds.VoegZaakdocumentToe(
                 txtZaakIdentificatie.Text,
@@ -164,39 +162,38 @@ namespace DeSleepTool
                 documentmapping.Vertrouwelijkheid,
                 documentmapping.Mimetype,
                 documentmapping.Bestandsnaam,
-                documentdata);
+                document.filedata);
         }
 
-        private void lvDocumenten_DragDrop(object sender, DragEventArgs e)
+        struct UploadDocument {
+            public System.IO.FileInfo fileinfo;
+            public byte[] filedata;
+
+        }
+        UploadDocument[] filesToUpload;
+
+        private void tmrUploadFiles_Tick(object sender, EventArgs e)
         {
+            tmrUploadFiles.Stop();
+            this.Activate();
+
+            if (filesToUpload != null)
+            {
 #if !DEBUG
             try
             {
 #endif
-                if (e.Data.GetDataPresent(DataFormats.FileDrop))
-                {
-                    string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-                    foreach (string filename in files)
-                    {
-                        AddFileToZds(zds, filename);
-                    }
-                }
-                else if (e.Data.GetDataPresent("FileGroupDescriptor"))
-                {
-                    OutlookDataObject dataObject = new OutlookDataObject(e.Data);
-                    string[] filenames = (string[])dataObject.GetData("FileGroupDescriptor");
-                    System.IO.MemoryStream[] streams = (System.IO.MemoryStream[])dataObject.GetData("FileContents");
-                    for (int i = 0; i < filenames.Length; i++)
-                    {
-                        var zaakdocumentid = zds.GenereerDocumentidentificatie(txtZaakIdentificatie.Text);
-                        string filename = filenames[i];
-                        System.IO.MemoryStream stream = streams[i];
-                        var documentdata = stream.ToArray();
 
-                        AddFileToZds(zds, filename);
-                    }
+                if (txtZaakIdentificatie.Text.Trim().Length == 0)
+                {
+                    MessageBox.Show("Geen Zaakidentificatie ingevoerd!");
+                    return;
                 }
-                else throw new Exception("unexpected format in drap/drop");            
+
+                foreach (UploadDocument document in filesToUpload)
+                {
+                    AddFileToZds(document);
+                }
 #if !DEBUG
             }
             catch (Exception ex)
@@ -204,7 +201,46 @@ namespace DeSleepTool
                 MessageBox.Show(ex.Message, "Fout bij toevoegen van documenten aan de zaak", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 #endif
+                filesToUpload = null;
+            }
             RefreshData();
+        }
+
+        private void lvDocumenten_DragDrop(object sender, DragEventArgs e)
+        {
+            var uploads = new List<UploadDocument>();
+
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                string[] files= (string[])e.Data.GetData(DataFormats.FileDrop);
+                foreach(String file in files)
+                {
+                    var upload = new UploadDocument();
+                    upload.fileinfo = new System.IO.FileInfo(file);
+                    upload.filedata = System.IO.File.ReadAllBytes(upload.fileinfo.FullName);
+                    uploads.Add(upload);
+                }
+            }
+            else if (e.Data.GetDataPresent("FileGroupDescriptor"))
+            {
+                OutlookDataObject dataObject = new OutlookDataObject(e.Data);
+                string[] filenames = (string[])dataObject.GetData("FileGroupDescriptor");
+                System.IO.MemoryStream[] streams = (System.IO.MemoryStream[])dataObject.GetData("FileContents");
+                for (int i = 0; i < filenames.Length; i++)
+                {
+                    var upload = new UploadDocument();
+                    upload.fileinfo = new System.IO.FileInfo(filenames[i]);
+                    System.IO.MemoryStream stream = streams[i];
+                    upload.filedata = stream.ToArray();
+                    uploads.Add(upload);
+                }
+            }
+            else throw new Exception("unexpected format in drap/drop");            
+
+            if(uploads.Count > 0) {
+                filesToUpload = uploads.ToArray();
+                tmrUploadFiles.Start();
+            }
         }
 
         private void lvDocumenten_DragEnter(object sender, DragEventArgs e)
@@ -240,6 +276,9 @@ namespace DeSleepTool
         {
             if (Properties.Settings.Default.OpenZaakDocuments)
             {
+
+                Cursor.Current = Cursors.WaitCursor;
+
                 ZaakDocumentWrapper zdw = (ZaakDocumentWrapper)lvi.Tag;
                 ZaakDocumentBytesWrapper zdbw = zds.geefZaakdocumentLezen(zdw.Identificatie);
                 //var filename = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + zdbw.Bestandsnaam;                
@@ -264,6 +303,8 @@ namespace DeSleepTool
                         // Delete the temporary file when the application is closed
                         File.Delete(filename);
                     };
+
+                    Cursor.Current = Cursors.Default;
                     process.Start();
                 }
             }
@@ -287,7 +328,9 @@ namespace DeSleepTool
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
             var tasks = zds.getTasks();
-            MessageBox.Show("Er zijn nog:" + tasks.Length + " taken te verzenden. Zorg ervoor dat deze nog verzonden worden!");
+            if(tasks.Length > 0) { 
+                MessageBox.Show("Er zijn nog:" + tasks.Length + " taken te verzenden. Zorg ervoor dat deze nog verzonden worden!");
+            }
             zds.Close();
         }
     }

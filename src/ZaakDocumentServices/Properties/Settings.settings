@@ -1,0 +1,18 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ZaakDocumentServices.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="FOLDER_TOSEND" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">/ZaakGewijsWerken/TeVerzenden/</Value>
+    </Setting>
+    <Setting Name="FOLDER_SENDING" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">/ZaakGewijsWerken/WordtVerzonden/</Value>
+    </Setting>
+    <Setting Name="FOLDER_SEND" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">/ZaakGewijsWerken/ZijnVerzonden/</Value>
+    </Setting>
+    <Setting Name="FOLDER_ERROR" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">/ZaakGewijsWerken/Fouten/</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

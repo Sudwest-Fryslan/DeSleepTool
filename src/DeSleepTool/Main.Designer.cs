@@ -48,13 +48,14 @@
             this.chZaak = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chDocument = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ilTaskIcons = new System.Windows.Forms.ImageList(this.components);
+            this.tmrUploadFiles = new System.Windows.Forms.Timer(this.components);
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStrip1
             // 
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
-            this.statusStrip1.Location = new System.Drawing.Point(0, 383);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 464);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(296, 22);
             this.statusStrip1.TabIndex = 0;
@@ -176,7 +177,7 @@
             this.lvDocumenten.HideSelection = false;
             this.lvDocumenten.Location = new System.Drawing.Point(0, 177);
             this.lvDocumenten.Name = "lvDocumenten";
-            this.lvDocumenten.Size = new System.Drawing.Size(296, 86);
+            this.lvDocumenten.Size = new System.Drawing.Size(296, 205);
             this.lvDocumenten.TabIndex = 2;
             this.lvDocumenten.UseCompatibleStateImageBehavior = false;
             this.lvDocumenten.View = System.Windows.Forms.View.List;
@@ -192,10 +193,10 @@
             this.chDocument});
             this.lvTasks.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.lvTasks.HideSelection = false;
-            this.lvTasks.Location = new System.Drawing.Point(0, 263);
-            this.lvTasks.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.lvTasks.Location = new System.Drawing.Point(0, 382);
+            this.lvTasks.Margin = new System.Windows.Forms.Padding(2);
             this.lvTasks.Name = "lvTasks";
-            this.lvTasks.Size = new System.Drawing.Size(296, 120);
+            this.lvTasks.Size = new System.Drawing.Size(296, 82);
             this.lvTasks.SmallImageList = this.ilTaskIcons;
             this.lvTasks.TabIndex = 3;
             this.lvTasks.UseCompatibleStateImageBehavior = false;
@@ -221,13 +222,17 @@
             this.ilTaskIcons.Images.SetKeyName(1, "processing.png");
             this.ilTaskIcons.Images.SetKeyName(2, "error.png");
             // 
+            // tmrUploadFiles
+            // 
+            this.tmrUploadFiles.Tick += new System.EventHandler(this.tmrUploadFiles_Tick);
+            // 
             // Main
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(296, 405);
+            this.ClientSize = new System.Drawing.Size(296, 486);
             this.Controls.Add(this.lvDocumenten);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.lvTasks);
@@ -266,6 +271,7 @@
         private System.Windows.Forms.ColumnHeader chZaak;
         private System.Windows.Forms.ColumnHeader chDocument;
         private System.Windows.Forms.ImageList ilTaskIcons;
+        private System.Windows.Forms.Timer tmrUploadFiles;
     }
 }
 

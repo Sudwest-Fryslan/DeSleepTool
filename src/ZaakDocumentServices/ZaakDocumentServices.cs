@@ -37,12 +37,13 @@ namespace ZaakDocumentServices
         private string standaardZaakDocumentServicesBeantwoordVraagService;
         private bool uploadInBackground;
 
-        private string FOLDER_TOSEND = "/ZaakGewijsWerken/TeVerzenden/";
-        private string FOLDER_SENDING = "/ZaakGewijsWerken/Verzenden/";
-        private string FOLDER_SEND = "/ZaakGewijsWerken/Verzonden/";
-        private string FOLDER_ERROR = "/ZaakGewijsWerken/Fouten/";
-
         private Thread backgroundThread;
+
+        private string FOLDER_ERROR;
+        private string FOLDER_SENDING;
+        private string FOLDER_TOSEND;
+        private string FOLDER_SEND;
+
 
         public ZaakDocumentServices(string dataDirectory, string standaardZaakDocumentServicesVrijBerichtService, string standaardZaakDocumentServicesOntvangAsynchroonService, string standaardZaakDocumentServicesBeantwoordVraagService, bool uploadInBackground)
         {
@@ -59,7 +60,7 @@ namespace ZaakDocumentServices
             if (this.uploadInBackground)
             {
                 dataDirectory = Environment.ExpandEnvironmentVariables(dataDirectory);
-                var di = new System.IO.DirectoryInfo(dataDirectory + FOLDER_ERROR);
+                var di = new System.IO.DirectoryInfo(dataDirectory + Properties.Settings.Default.FOLDER_ERROR);
                 di.Create();
                 if (di.GetFiles().Length > 0)
                 {
@@ -69,27 +70,27 @@ namespace ZaakDocumentServices
                 }
                 FOLDER_ERROR = di.FullName;
 
-                di = new System.IO.DirectoryInfo(dataDirectory + FOLDER_SENDING);
+                di = new System.IO.DirectoryInfo(dataDirectory + Properties.Settings.Default.FOLDER_TOSEND);
                 di.Create();
                 if (di.GetFiles().Length > 0)
                 {
-                    var message = "Found #" + di.GetFiles().Length + " sending in the directory:" + di.FullName;
-                    Console.WriteLine(message);
-                    InfoMessage?.Invoke(message);
-                }
-                FOLDER_SENDING = di.FullName;
-
-                di = new System.IO.DirectoryInfo(dataDirectory + FOLDER_TOSEND);
-                di.Create();
-                if (di.GetFiles().Length > 0)
-                {
-                    var message = "Found #" + di.GetFiles().Length + " tosend in the directory:" + di.FullName;
+                    var message = "Found #" + di.GetFiles().Length + " files to send in the directory:" + di.FullName;
                     Console.WriteLine(message);
                     InfoMessage?.Invoke(message);
                 }
                 FOLDER_TOSEND = di.FullName;
 
-                di = new System.IO.DirectoryInfo(dataDirectory + FOLDER_SEND);
+                di = new System.IO.DirectoryInfo(dataDirectory + Properties.Settings.Default.FOLDER_SENDING);
+                di.Create();
+                if (di.GetFiles().Length > 0)
+                {
+                    var message = "Found #" + di.GetFiles().Length + " files are being send in the directory:" + di.FullName;
+                    Console.WriteLine(message);
+                    InfoMessage?.Invoke(message);
+                }
+                FOLDER_SENDING = di.FullName;
+
+                di = new System.IO.DirectoryInfo(dataDirectory + Properties.Settings.Default.FOLDER_SEND);
                 di.Create();
                 FOLDER_SEND = di.FullName;
 
@@ -151,6 +152,8 @@ namespace ZaakDocumentServices
         {
             do
             {
+                Progress?.Invoke();
+
                 foreach (FileInfo filelocation in new DirectoryInfo(FOLDER_TOSEND).GetFiles())
                 {
                     Console.WriteLine("Processing:" + filelocation.FullName);
@@ -166,7 +169,7 @@ namespace ZaakDocumentServices
                         var responsedocument = soapservice.PerformRequest(requestdocument);
                         var sendlocation = new FileInfo(FOLDER_SEND + filelocation.Name);
                         Console.WriteLine("Send:" + sendlocation.FullName);
-                        sendinglocation.MoveTo(sendinglocation.FullName);
+                        sendinglocation.MoveTo(sendlocation.FullName);
                     }
                     catch (Exception ex)
                     {
@@ -178,7 +181,7 @@ namespace ZaakDocumentServices
                     Progress?.Invoke();
                 }
                 Console.WriteLine("...Waiting...");
-                System.Threading.Thread.Sleep(500);
+                System.Threading.Thread.Sleep(100);
             } while (true);
         }
 
@@ -245,7 +248,7 @@ namespace ZaakDocumentServices
             byte[] documentdata
             )
         {
-            //TODO: check if exists
+            // check if name exists
             var documenten = GeefLijstZaakdocumenten(zaakidentificatie);
             var dict = new Dictionary<string, ZaakDocumentWrapper>();
             foreach (var document in documenten)
@@ -255,6 +258,7 @@ namespace ZaakDocumentServices
                     dict.Add(document.Titel, document);
                 }
             }
+            // and rename if necessary 
             if (dict.ContainsKey(titel))
             {
                 var name = titel;

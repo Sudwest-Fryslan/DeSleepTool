@@ -7,10 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeSleepTool", "DeSleepTool\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZaakDocumentServices", "ZaakDocumentServices\ZaakDocumentServices.csproj", "{20565E83-F2A5-4764-A155-38ABDC2CBFBE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CorsaDocumentManager", "CorsaDocumentManager\CorsaDocumentManager.csproj", "{649FA61C-3CFC-4C95-ABA4-C1260EE50489}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CorsaDocumentServices", "CorsaDocumentServices\CorsaDocumentServices.csproj", "{E0D90815-A6B8-4E5E-AC69-8FFE4AF0D539}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,14 +21,6 @@ Global
 		{20565E83-F2A5-4764-A155-38ABDC2CBFBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20565E83-F2A5-4764-A155-38ABDC2CBFBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{20565E83-F2A5-4764-A155-38ABDC2CBFBE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{649FA61C-3CFC-4C95-ABA4-C1260EE50489}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{649FA61C-3CFC-4C95-ABA4-C1260EE50489}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{649FA61C-3CFC-4C95-ABA4-C1260EE50489}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{649FA61C-3CFC-4C95-ABA4-C1260EE50489}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E0D90815-A6B8-4E5E-AC69-8FFE4AF0D539}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E0D90815-A6B8-4E5E-AC69-8FFE4AF0D539}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E0D90815-A6B8-4E5E-AC69-8FFE4AF0D539}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E0D90815-A6B8-4E5E-AC69-8FFE4AF0D539}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
