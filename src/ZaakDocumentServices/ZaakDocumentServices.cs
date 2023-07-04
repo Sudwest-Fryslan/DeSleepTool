@@ -92,6 +92,13 @@ namespace ZaakDocumentServices
 
                 di = new System.IO.DirectoryInfo(dataDirectory + Properties.Settings.Default.FOLDER_SEND);
                 di.Create();
+                foreach (FileInfo fi in di.GetFiles())
+                {
+                    // delete old files
+                    if (fi.LastAccessTime < DateTime.Now.AddDays(-7)) { 
+                        fi.Delete();
+                    }
+                }
                 FOLDER_SEND = di.FullName;
 
                 backgroundThread = new Thread(() => BackgroundThreadFunction());
