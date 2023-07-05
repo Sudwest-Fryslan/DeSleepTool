@@ -18,6 +18,7 @@ namespace DeSleepTool
     {
 
         private ZaakDocumentServices.ZaakDocumentServices zds;
+        private string ZaakIdentificatie = null;
         public Main()
         {
             InitializeComponent();
@@ -73,8 +74,13 @@ namespace DeSleepTool
             {
                 try
                 {
+                    if (ZaakIdentificatie == null)
+                    {
+                        return;
+                    }
                     lvDocumenten.Items.Clear();
-                    var documenten = zds.GeefLijstZaakdocumenten(txtZaakIdentificatie.Text);
+
+                    var documenten = zds.GeefLijstZaakdocumenten(ZaakIdentificatie);
                     foreach (var document in documenten)
                     {
                         var lvi = new ListViewItem(document.Titel);
@@ -103,14 +109,20 @@ namespace DeSleepTool
             lvDocumenten.Clear();
             lvDocumenten.Enabled = false;
 
+            if (ZaakIdentificatie == null)
+            {
+                return;
+            }
+
             ZaakDocumentServices.ZaakNodeWrapper zaak = null;
             try
             {
-                zaak = zds.GeefZaakDetails(txtZaakIdentificatie.Text);
+                zaak = zds.GeefZaakDetails(ZaakIdentificatie);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
+                ZaakIdentificatie = null;
                 return;
             }
             txtZaakTypeOmschrijving.Text = zaak.ZaakTypeOmschrijving;
@@ -119,7 +131,7 @@ namespace DeSleepTool
             txtAfzender.Text = zaak.Afzender;
 
 
-            var documenten = zds.GeefLijstZaakdocumenten(txtZaakIdentificatie.Text);
+            var documenten = zds.GeefLijstZaakdocumenten(ZaakIdentificatie);
             foreach (var document in documenten)
             {
                 var lvi = new ListViewItem(document.Titel);
@@ -261,6 +273,7 @@ namespace DeSleepTool
         private void btnPaste_Click(object sender, EventArgs e)
         {
             txtZaakIdentificatie.Text = Clipboard.GetText();
+            ZaakIdentificatie = txtZaakIdentificatie.Text;
             RefreshData();
         }
 
@@ -268,6 +281,7 @@ namespace DeSleepTool
         {
             if (e.KeyCode == Keys.Enter)
             {
+                ZaakIdentificatie = txtZaakIdentificatie.Text;
                 RefreshData();
             }
         }
